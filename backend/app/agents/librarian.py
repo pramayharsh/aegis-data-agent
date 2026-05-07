@@ -43,7 +43,10 @@ class LibrarianAgent:
             sender="LibrarianAgent",
             receiver="Orchestrator",
             performative="INFORM" if "REJECT" not in response_content else "FAILURE",
-            content={"relevant_tables": response_content},
+            content={
+                "relevant_tables": response_content,
+                "query": user_query
+            },
             conversation_id=message.conversation_id
         )
 

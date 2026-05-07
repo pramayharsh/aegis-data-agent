@@ -45,7 +45,11 @@ class SentinelAgent:
             sender="SentinelAgent",
             receiver="Orchestrator",
             performative="INFORM" if "VALID" in response_content else "REJECT",
-            content={"security_check": response_content},
+            content={
+                "security_check": response_content,
+                "query": user_query,
+                "relevant_tables": relevant_tables
+                },
             conversation_id=message.conversation_id
         )
 

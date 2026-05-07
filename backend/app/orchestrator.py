@@ -1,6 +1,7 @@
 from .agents.librarian import LibrarianAgent
 from .agents.sentinel import SentinelAgent
 from .agents.coder import CoderAgent
+from .agents.data_agent import DataAgent
 from .protocols.acp import AgentMessage
 import uuid
 
@@ -10,7 +11,8 @@ class AegisMessageBus:
         self.agents = {
             "LibrarianAgent": LibrarianAgent(),
             "SentinelAgent": SentinelAgent(),
-            "CoderAgent": CoderAgent()
+            "CoderAgent": CoderAgent(),
+            "DataAgent": DataAgent()
         }
         self.history = []
 
@@ -49,7 +51,11 @@ class AegisMessageBus:
             
             elif target_name == "CoderAgent":
                 response = agent.generate_sql(message)
-                # Coder logic: Done -> Send to User
+                response.receiver = "DataAgent"
+
+            elif target_name == "DataAgent":
+                response = agent.execute_query(message)
+                # After getting data, send it back to the user
                 response.receiver = "User"
 
             # Recursive call: Send the new message back to the bus
